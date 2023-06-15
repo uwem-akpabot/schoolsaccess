@@ -1,0 +1,70 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}Write S-O-A-P Note{% endblock %}
+{% load static %}
+
+{% block content %}
+
+{% if user.userprofile.is_doc or user.userprofile.is_admin %}
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row">
+      <div class="col-xl">
+      <div class="card mb-4">
+        <div class="card-body">      
+          <h4 class="card-title">Write S-O-A-P Note / <small class="text-primary">{{company|slice:"0:19"}}</small></h4>
+          <p class="card-description">Fill out this form to register a patient</p>
+          <form method="POST" action="." class="forms-sample">
+            {% csrf_token %}
+            <div class="row">           
+              {% include 'frontend/includes/select_patient_and_date.html' %}
+
+              <div class="col-12 form-group pb-3">
+                <label for="exampleInputPassword1">Subjective</label>
+                <textarea name="subjective" class="form-control" id="exampleInputAddress" placeholder="Subjective" required></textarea>
+                <small id="emailHelp" class="form-text text-muted">
+                  <span class="text-danger">Required. </span></small>
+              </div>
+
+              <div class="col-12 form-group pb-3">
+                <label for="exampleInputPassword1">Objective</label>
+                <textarea name="objective" class="form-control" id="exampleInputAddress" placeholder="Objective"></textarea>
+                <small id="emailHelp" class="form-text text-muted">Enter the objective ...</small>
+              </div>
+
+              <div class="col-12 form-group pb-3">
+                <label for="exampleInputPassword1">Assessment</label>
+                <textarea name="assessment" class="form-control" id="exampleInputAddress" placeholder="Assessment"></textarea>
+                <small id="emailHelp" class="form-text text-muted">Enter the assessment ...</small>
+              </div>
+
+              <div class="col-12 form-group pb-3">
+                <label for="exampleInputPassword1">Plan</label>
+                <textarea name="plan" class="form-control" id="exampleInputAddress" placeholder="Plan"></textarea>
+                <small id="emailHelp" class="form-text text-muted">Enter the plan ...</small>
+              </div>
+              
+              <div class="col-12 form-group pb-3">
+                <label for="exampleInputPassword1">Other Comments</label>
+                <textarea name="comments" class="form-control" id="exampleInputAddress" placeholder="Other Comments"></textarea>
+                <small id="emailHelp" class="form-text text-muted">Enter the comments ...</small>
+              </div>
+              <input type="text" name="created_by" class="form-control" value="{{user.userprofile.first_name}} {{user.userprofile.last_name}}" style="display: none" />
+              <div class="col-12 col-md-6 form-group pb-3">
+                <button class="btn btn-primary me-2">Save Record</button>
+                <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+              </div>
+              <br />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+{% else %}
+  {% include 'frontend/includes/page_unauthorized.html' %}
+{% endif %}
+
+{% endblock %}

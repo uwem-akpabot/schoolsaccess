@@ -1,0 +1,216 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+	<div class="container-xxl flex-grow-1 container-p-y">
+		<h4 class="card-title" style="color:rgb(189, 75, 189);"><small>{{company}}</small></h4>
+		<h3 class="card-title">Dashboard</h3>
+
+		{% if request.user.is_authenticated %}
+			<h5 class="card-title text-primary"></h5>Hello, <b class="text-primary">{{user.userprofile.first_name}} {{user.userprofile.last_name}}</b>! 🎉</h5>
+			<p class="mb-4">You're logged-in as <span class="fw-bold">
+				{% if user.userprofile.is_doc %}
+					Doctor
+				{% elif user.userprofile.is_nrs %}
+					Nurse
+				{% elif user.userprofile.is_lab %}
+					Lab. Scientist
+				{% elif user.userprofile.is_pharm %}
+					Pharmacist
+				{% else %}
+					Administrator
+				{% endif %}
+			</span>.
+			</p>
+		{% else %}
+			Sorry, you are not authenticated to access this page.
+		{% endif %}
+
+
+	<div class="row">
+		{% include 'frontend/includes/card1.html' %}
+		{% include 'frontend/includes/card2.html' %}
+		{% include 'frontend/includes/card3.html' %}
+
+		<!-- Total Revenue -->
+		<div class="col-12 col-lg-8 order-3 order-md-3 order-lg-2 mb-4">
+		<div class="card">
+			<div class="row row-bordered g-0">
+			<div class="col-md-8">
+				<h5 class="card-header m-0 me-2 pb-3">Health Analytics</h5>
+				<div id="totalRevenueChart" class="px-2"></div>
+			</div>
+			<div class="col-md-4">
+				<div class="card-body">
+				<div class="text-center">
+					<div class="dropdown">
+					<button
+						class="btn btn-sm btn-outline-primary dropdown-toggle"
+						type="button"
+						id="growthReportId"
+						data-bs-toggle="dropdown"
+						aria-haspopup="true"
+						aria-expanded="false"
+					>
+						2022
+					</button>
+					<div class="dropdown-menu dropdown-menu-end" aria-labelledby="growthReportId">
+						<a class="dropdown-item" href="javascript:void(0);">2021</a>
+						<a class="dropdown-item" href="javascript:void(0);">2020</a>
+						<a class="dropdown-item" href="javascript:void(0);">2019</a>
+					</div>
+					</div>
+				</div>
+				</div>
+				<div id="growthChart"></div>
+				<div class="text-center fw-semibold pt-3 mb-2">62% Company Growth</div>
+
+				<div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
+				<div class="d-flex">
+					<div class="me-2">
+					<span class="badge bg-label-primary p-2"><i class="bx bx-dollar text-primary"></i></span>
+					</div>
+					<div class="d-flex flex-column">
+					<small>2022</small>
+					<h6 class="mb-0">$32.5k</h6>
+					</div>
+				</div>
+				<div class="d-flex">
+					<div class="me-2">
+					<span class="badge bg-label-info p-2"><i class="bx bx-wallet text-info"></i></span>
+					</div>
+					<div class="d-flex flex-column">
+					<small>2021</small>
+					<h6 class="mb-0">$41.2k</h6>
+					</div>
+				</div>
+				</div>
+			</div>
+			</div>
+		</div>
+		</div>
+		
+		<div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+		<div class="order-0 mb-4">
+			{% include 'frontend/includes/card4.html' %}
+			{% include 'frontend/includes/card4.html' %}
+		</div>
+	   </div> 
+	  </div>
+	</div>
+
+	<!-- <div class="pb-5">
+	    <div class="row g-5">
+	      <div class="col-12 col-xxl-6">
+	        <div class="mb-8">
+	          <h2 class="mb-2">Dashboard</h2>
+	          <h5 class="text-700 fw-semi-bold">{{company}}</h5>
+
+            {% if request.user.is_authenticated %}
+
+              Hi <b class="text-primary">{{user.userprofile.first_name}} {{user.userprofile.last_name}}</b>,
+              <span class="text-muted"><i>you're logged-in as
+              <strong class="text-primary">
+                {% if user.userprofile.is_dir %}
+                  Director
+                {% elif user.userprofile.is_mgr %}
+                  Manager
+                {% elif user.userprofile.is_teller %}
+                  Teller
+                {% elif user.userprofile.is_cust %}
+                  Customer
+                {% else %}
+                  Not applicable
+                {% endif %}
+              </strong>
+              </i></span>
+
+            {% else %}
+              Sorry, you are not authenticated to access this page.
+            {% endif %}
+
+	        </div>
+	        <div class="row align-items-center g-4">
+	          <div class="col-12 col-md-auto">
+	            <div class="d-flex align-items-center"><img src="{% static 'img/icons/illustrations/4.png' %}" alt="" height="46" width="46">
+	              <div class="ms-3">
+	                <h4 class="mb-0">{{ customers.count }} customers</h4>
+	                <p class="text-800 fs--1 mb-0">Registered Members</p>
+	              </div>
+	            </div>
+	          </div>
+	          <div class="col-12 col-md-auto">
+	            <div class="d-flex align-items-center"><img src="{% static 'img/icons/illustrations/2.png' %}" alt="" height="46" width="46">
+	              <div class="ms-3">
+	                <h4 class="mb-0">{{ count_users }} users altogether</h4>
+	                <p class="text-800 fs--1 mb-0">Managers, Tellers, Customers</p>
+	              </div>
+	            </div>
+	          </div>
+			  {% if user.userprofile.is_dir %}
+	          <div class="col-12 col-md-auto">
+	            <div class="d-flex align-items-center"><img src="{% static 'img/icons/illustrations/3.png' %}" alt="" height="46" width="46">
+	              <div class="ms-3">
+	                <h4 class="mb-0">Latest transaction</h4>
+	                <p class="text-800 fs--1 mb-0">{{ company_account.transaction_detail }} &#8358;{{ company_account.amount }}</p>
+	              </div>
+	            </div>
+	          </div>
+			  {% endif %}
+	        </div>
+	        <hr class="bg-200 mb-0 mt-4">
+	      </div>
+	      <div class="col-12 col-xxl-6">
+	        <div class="row g-3">
+	          <div class="col-12 col-md-6">
+	            <div class="card border border-200 shadow-none h-100">
+	              <div class="card-body">
+	                <div class="d-flex justify-content-between">
+	                  <div>
+	                    <h5 class="mb-1">Total orders<span class="badge badge-light-warning rounded-pill fs--1 ms-2">-6.8%</span></h5>
+	                    <h6 class="text-700">Last 7 days</h6>
+	                  </div>
+	                  <h4>16,247</h4>
+	                </div>
+	                <div class="d-flex justify-content-center px-4 py-6">
+	                  <div class="echart-total-orders" style="height:85px;width:115px" data-echarts='{"tooltip":{"show":false},"series":[{"type":"bar","barWidth":"5px","data":[120,200,150,80,70,110,120],"showBackground":true,"symbol":"none","itemStyle":{"borderRadius":10},"backgroundStyle":{"borderRadius":10}}],"grid":{"right":10,"left":10,"bottom":0,"top":0}}'></div>
+	                </div>
+	                <div class="mt-2">
+	                  <div class="d-flex align-items-center mb-2">
+	                    <div class="bullet-item bg-primary me-2"></div>
+	                    <h6 class="text-900 fw-semi-bold flex-1 mb-0">Completed</h6>
+	                    <h6 class="text-900 fw-semi-bold mb-0">52%</h6>
+	                  </div>
+	                  <div class="d-flex align-items-center">
+	                    <div class="bullet-item bg-light-primary me-2"></div>
+	                    <h6 class="text-900 fw-semi-bold flex-1 mb-0">Pending payment</h6>
+	                    <h6 class="text-900 fw-semi-bold mb-0">48%</h6>
+	                  </div>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+	          <div class="col-12 col-md-6">
+	            <div class="card border border-200 shadow-none h-100">
+	              <div class="card-body">
+	                <div class="d-flex justify-content-between">
+	                  <div>
+	                    <h5 class="mb-1">New customers<span class="badge badge-light-warning rounded-pill fs--1 ms-2">+26.5%</span></h5>
+	                    <h6 class="text-700">Last 7 days</h6>
+	                  </div>
+	                  <h4>356</h4>
+	                </div>
+	                <div class="pb-0 pt-4">
+	                  <div class="echarts-new-customers" style="height:180px;width:100%;"></div>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div> -->
+{% endblock %}
