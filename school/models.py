@@ -15,7 +15,7 @@ class School(models.Model):
     # patient = models.ForeignKey(Patient, related_name='soapnote', on_delete=models.CASCADE)
 	name = models.CharField(max_length=50)
 	address = models.TextField(blank=True, null=True)
-	state = models.CharField(blank=True, null=True)
+	state = models.CharField(max_length=15, blank=True, null=True)
 	phone = models.CharField(max_length=12, blank=True, null=True)
 	email = models.CharField(max_length=100, blank=True, null=True)
 	slogan = models.CharField(max_length=45, blank=True, null=True)
@@ -42,7 +42,7 @@ class Sesssion(models.Model):
 		('2030/2031', '2030/2031'), 
     )
 	school = models.ForeignKey(School, related_name='sesssion', on_delete=models.CASCADE)
-	name = models.CharField(max_length=6, choices=SESSIONS)
+	name = models.CharField(max_length=10, choices=SESSIONS)
 	is_current = models.BooleanField(default=False)
 	duration_start = models.CharField(max_length=20, blank=True, null=True) 
 	duration_end = models.CharField(max_length=20, blank=True, null=True)
@@ -57,7 +57,7 @@ class Term(models.Model):
 		('All', 'All'), 
     )
 	school = models.ForeignKey(School, related_name='term', on_delete=models.CASCADE)
-	name = models.CharField(max_length=6, choices=TERMS)
+	name = models.CharField(max_length=10, choices=TERMS)
 	is_current = models.BooleanField(default=False)
 	duration_start = models.CharField(max_length=20, blank=True, null=True) 
 	duration_end = models.CharField(max_length=20, blank=True, null=True)
